@@ -1,0 +1,47 @@
+190618
+chrono is a terminal ncurses-based and/or X11-based windowed chronometer with
+millisecond precision, days, months & years, countdown, pause and reset
+function. It is written in the C programming language and can be compiled
+by running:
+'./configure && make' from the source directory.
+
+The latest available source code is @ https://github.com/cody1632/chrono
+
+Note that you will need the ncurses development headers,
+ie: /usr/include/ncursesw/ncurses.h. You can run
+'sudo apt install libncurses5-dev' on Debian/DEB-based Linux systems, or
+'sudo yum install ncurses-devel' on RedHat/RPM-based systems.
+Optionally the X11 headers will be checked during the configure, which can be
+installed by running:
+'sudo apt install libX11-dev' or
+'yum install libX11-devel'
+
+You can add these options to the configure script:
+--disable-ncurses    To disable terminal-based interface
+--disable-x11        To disable GUI-based interface
+The default is to enable both if preset. Note that one or both options are
+required to be enabled for the program to provide minimal functions.
+
+chrono options are:
+	-h, --help       Show this help message
+	-c, --countdown  Count using one of these formats:
+					 15, 1:15, 1:30:45, 2:10:5:0, 4:2:0:0:0 or y:m:d:h:m:s
+	-s, --seconds    Display seconds instead of milliseconds
+	-t, --test       Perform debugging tests and exit
+	-V, --version    Show program version and exit
+
+If X11 support are enabled, these options become available:
+	-S, --sticky     Show window on all desktops
+	-x, --X11        Use the X11 GUI
+	-W, --width      Set the window horizontal size
+	-H, --height     Set the window vertical size
+	-X, --position-x Set the window horizontal position
+	-Y, --position-y Set the window vertical position
+The -x option is not available if built without ncurses support
+
+Once chrono is started, you can press:
+'p' or <Space> pause and unpause,
+'q' or <Escape> quit
+'r' reset the counter
+'s' toggle seconds only
+
