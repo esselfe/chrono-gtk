@@ -25,12 +25,10 @@ void Test(void);
 #ifdef HAVE_GTK
 #include <gtk/gtk.h>
 /* from gtk.c */
-extern GtkWidget *mainwin;
-extern GtkWidget *text_view;
 extern GtkTextBuffer *buffer;
-extern unsigned int gtk_has_init;
 
 void gWindowInit(int *argc, char **argv);
+int gUpdate(void *argp);
 #endif
 
 /* from xlib.c */

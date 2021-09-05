@@ -114,56 +114,6 @@ void ShowHelp(void) {
 "Once chrono has started, press 'q' to quit, 'r' to reset and 'p' or <space> to pause\n");
 }
 
-void *ThreadFunc(void *argp){
-	char str[1024];
-	memset(str, 0, 1024);
-	gettimeofday(&tv_start, NULL);
-    while (!endmainloop) {
-		if (!gtk_has_init) {
-			usleep(100000);
-			continue;
-		}
-        gettimeofday(&tv0, NULL);
-        timersub(&tv0, &tv_start, &tv_diff);
-        timersub(&tv_diff, &tv_paused, &tv_current);
-	    if (countdown) {
-	        timersub(&tv_current, &tv_prev, &tv_diff);
-	        tv_prev = tv_current;
-	        timersub(&tv_countdown, &tv_diff, &tv_countdown);
-	        if (tv_countdown.tv_sec <= 0 && tv_countdown.tv_usec <= 2000) {
-	            if (countdown_repeat) {
-	                tv_countdown = tv_countdown_restore;
-	                tv_paused.tv_sec = 0;
-	                tv_paused.tv_usec = 0;
-	            }
-	            else
-	                break;
-	        }
-	        tm0 = gmtime(&tv_countdown.tv_sec);
-	    }
-	    else
-	        tm0 = gmtime(&tv_current.tv_sec);
-
-		days = tm0->tm_mday - 1;
-	    months = tm0->tm_mon;
-	    years = tm0->tm_year - 70;
-
-		if (countdown) {
-			sprintf(str, "%uy%um%ud%02d:%02d:%02d.%03ld", years, months, days,
-				tm0->tm_hour, tm0->tm_min, tm0->tm_sec, tv_current.tv_usec/1000);
-		}
-		else {
-			sprintf(str, "%uy%um%ud%02d:%02d:%02d.%03ld", years, months, days,
-				tm0->tm_hour, tm0->tm_min, tm0->tm_sec, tv_countdown.tv_usec/1000);
-		}
-		//gtk_window_activate_focus(mainwin);
-		gtk_window_get_focus(mainwin);
-		gtk_text_buffer_set_text(buffer, str, -1);
-	}
-
-
-}
-
 // timestr should be like "01:45:30" or "2:15" or "10"
 unsigned int ParseTimeToSeconds(char *timestr) {
 	unsigned int cnt = strlen(timestr)-1, seconds_total, hours, minutes, seconds,
@@ -356,16 +306,8 @@ int main(int argc, char **argv) {
 #endif
 
 #ifdef HAVE_GTK
-	if (use_gtk) {
-		pthread_t gthr;
-        pthread_attr_t gattr;
-        pthread_attr_init(&gattr);
-        pthread_attr_setdetachstate(&gattr, PTHREAD_CREATE_DETACHED);
-        pthread_create(&gthr, &gattr, ThreadFunc, NULL);
-        pthread_detach(gthr);
-        pthread_attr_destroy(&gattr);
+	if (use_gtk)
 		gWindowInit(&argc, argv);
-	}
 #endif
 
 #ifdef HAVE_NCURSES
