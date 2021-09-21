@@ -1,4 +1,4 @@
-190618
+190618 (from https://github.com/esselfe/chrono)
 chrono is a terminal ncurses-based and/or X11-based windowed chronometer with
 millisecond precision, days, months & years, countdown, pause and reset
 function. It is written in the C programming language and can be compiled
